@@ -46,8 +46,8 @@ handle_imports({Name, Imports, L}, Outdir, ImportDirs) ->
                                     throw(Import ++ " not found");
                                 File ->
                                     {ImportName, Imports1, L1} = parse_file(File, Outdir, ImportDirs),
-                                    case [ImportName == I || {I, _, _} <- Acc] of
-                                        [] ->
+                                    case lists:keyfind(ImportName, 1, Acc) of
+                                        false ->
                                             Result = generate_code({ImportName, Imports1, L1}),
                                             delete_existing_files(Outdir, Result),
                                             output_results(Outdir, Result),
